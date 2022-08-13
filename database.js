@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 let db;
 
 const connectToDb = (callback) =>{
-    mongoose.connect('mongodb://localhost:27017/subscription', {useNewUrlParser: true}).then((dbConnection)=>{
+    mongoose.connect('mongodb+srv://node-app:'+process.env.DB_PASSWORD+'@cluster0.x0hr6oa.mongodb.net/subscription', {useNewUrlParser: true}).then((dbConnection)=>{
         db = dbConnection;
         afterwards(callback);
     });
