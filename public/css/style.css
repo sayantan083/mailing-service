@@ -6,18 +6,29 @@ body {
     font-family: Inter;
 }
 h2 {
-    font-weight: 400;
+    font-weight: 600;
     font-size: 48px;
     line-height: 77px;
-    color: #615E5E;
-    margin-top: 20px;
+    color: #645c5c;
+    margin: 20px 0 40px;
+    text-align:center;
 }
 h4 {
     font-weight: 600;
     font-size: 32px;
     line-height: 58px;
     color: #615E5E;
-    margin: 0px 0 10px;
+    margin: 0px 0 15px;
+}
+@media(max-width:700px) {
+    h2{
+       font-size: 35px;
+       line-height: 40px;
+    }
+    h4{
+        font-size: 25px;
+        line-height: 30px;
+    }
 }
 div {
     display: flex;

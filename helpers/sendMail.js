@@ -19,12 +19,8 @@ module.exports = {
     let info = await transporter.sendMail({
         from: '"Sayantan Panda 👻" <sayantan083@gmail.com>',
         to: data.emails,
-        subject: "Want to make you smile",
-        html: `<div>
-          <h4>Hey there! Here is your daily digest of dad jokes😉</h4>
-          <p>${data.setup}</p>
-          <p>${data.punchline}</p>
-        </div>`,
+        subject: data.subject,
+        html: data.emailTemplate,
     });
 
     console.log("Message sent: %s", info.messageId);

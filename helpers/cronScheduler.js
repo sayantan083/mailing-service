@@ -4,14 +4,15 @@ const connection = require("../database");
 const {sendMail} = require('./sendMail');
 const axios = require('axios');
 
-const task = cron.schedule('30 8 * * *', () => {
+const task = cron.schedule('30 18 * * *', () => {
 
-    const registerUser = (db)=>{
+    const sendJoke = (db)=>{
         User.find({isSubscribed:true}).then(response=>{
 
             const allEmails = response.map(user=>{
                 return user.email
             })
+            console.log(allEmails)
             const options = {
                 url: 'https://dad-jokes.p.rapidapi.com/random/joke',
                 method: 'GET',
@@ -27,10 +28,13 @@ const task = cron.schedule('30 8 * * *', () => {
                 if(response.data.success){
                     const payload = {
                         emails: allEmails,
-                        setup: response.data.body[0].setup,
-                        punchline: response.data.body[0].punchline
+                        subject: "Want to make you smile",
+                        emailTemplate: `<div>
+                        <h4>Hey there! Here is your daily digest of dad jokes😉</h4>
+                        <p>${response.data.body[0].setup}</p>
+                        <p>${response.data.body[0].punchline}</p>
+                      </div>`
                     }
-                    console.log(payload)
                     sendMail(payload)
                     console.log('Sent mail at ' + indianDate);
                 }else {
@@ -49,7 +53,7 @@ const task = cron.schedule('30 8 * * *', () => {
         })
     }
 
-    connection.connect(registerUser)
+    connection.connect(sendJoke)
 
 }, {
   scheduled: true,

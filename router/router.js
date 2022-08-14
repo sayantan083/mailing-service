@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path')
 const User = require('../models/userModel');
 const connection = require("../database");
+const {sendMail} = require("../helpers/sendMail");
 
 router.get('/', (req, res)=>{
     res.sendFile(path.join(__dirname, '..', 'pages', 'home.html'))
@@ -19,6 +20,16 @@ router.post('/send', (req, res) => {
         const newUser = new User(body)
         newUser.save().then(response=>{
             console.log(response)
+            const payload = {
+                emails: body.email,
+                subject: "Subscription Confirmation",
+                emailTemplate: `<div>
+                <h4>Hey there! Welcome to the club😊</h4>
+                <p>This to confirm that you have been subscribed to our joke mailing service. You will receive a joke at 6:30 in the evening everyday.</p>
+                <p>If you want to unsubscribe from the service, then just reply unsubscribe me to this email.</p>
+              </div>`
+            }
+            sendMail(payload)
             res.json({
                 success: true,
                 message: 'Subscribed'
