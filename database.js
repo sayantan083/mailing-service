@@ -8,11 +8,8 @@ const connectToDb = (callback) =>{
     });
 }
 
-function afterwards(callback){
-
+const afterwards = (callback) =>{
     callback(db)
-
-    // db.disconnect();
 }
 
 const conn = mongoose.connection;
