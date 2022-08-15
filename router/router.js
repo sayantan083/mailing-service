@@ -26,7 +26,7 @@ router.post('/send', (req, res) => {
                 emailTemplate: `<div>
                 <h4>Hey there! Welcome to the club😊</h4>
                 <p>This to confirm that you have been subscribed to our joke mailing service. You will receive a joke at 6:30 in the evening everyday.</p>
-                <p>If you want to unsubscribe from the service, then just reply unsubscribe me to this email.</p>
+                <p><a href="https://joke-subscription.herokuapp.com/unsubscribe/${body.email}">Click here</a> to unsubscribe.</p>
               </div>`
             }
             sendMail(payload)
