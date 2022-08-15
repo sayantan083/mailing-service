@@ -27,7 +27,7 @@
             <label>Email</label>
             <input name="email" type="email" placeholder="Type your email id" value=""/>
         </div>
-        <button type="submit">Subscribe</button>
+        <button type="submit" id="btn">Subscribe</button>
     </form>
     <script>
         function handleSubmit(){
@@ -42,21 +42,28 @@
             headers.append('Accept', 'application/json'); // This one is enough for GET requests
             headers.append('Content-Type', 'application/json'); // This one sends body
 
+            const btn = document.getElementById("btn");
+            btn.disabled = true;
+
             fetch('/send', {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(payload),
             }).then(res => res.json())
             .then(response=>{
-                if(!response.success)
-                   alert(response.message)
+                if(!response.success){
+                    alert(response.message)
+                    btn.disabled = false;
+                }
                 else{
                     document.getElementById("my_form").reset();
+                    btn.disabled = false;
                     window.location.href = '/subscribed'
                 }
             })
             .catch(err=>{
                 console.log(err)
+                btn.disabled = false;
             })
         }
     </script>

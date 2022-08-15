@@ -58,6 +58,9 @@ button {
     color: #EEEEEE;
     cursor: pointer;
 }
+button:disabled{
+    opacity: 0.5;
+}
 .hideme{
     visibility: hidden;
 }

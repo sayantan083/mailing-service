@@ -59,5 +59,23 @@ router.get('/subscribed', (req, res)=>{
     res.sendFile(path.join(__dirname, '..', 'pages', 'subscribed.html'))
 });
 
+router.get('/unsubscribe/:email', (req, res)=>{
+
+    const email = req.params.email;
+
+    const unsubscribeUser = (db)=>{
+
+        User.findOneAndUpdate({email:email},{isSubscribed:false}).then(response=>{
+            console.log(response)
+            res.sendFile(path.join(__dirname, '..', 'pages', 'unsubscribed.html'))
+            db.disconnect()
+        }).catch(err=>{
+            res.sendFile(path.join(__dirname, '..', 'pages', 'error.html'))
+            db.disconnect()
+        })
+    }
+
+    connection.connect(unsubscribeUser)
+});
 
 module.exports = router;

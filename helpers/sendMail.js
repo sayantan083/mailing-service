@@ -17,7 +17,7 @@ module.exports = {
   sendMail: async (data) =>{
 
     let info = await transporter.sendMail({
-        from: '"Sayantan Panda 👻" <sayantan083@gmail.com>',
+        from: '"Sayantan Panda" <sayantan083@gmail.com>',
         to: data.emails,
         subject: data.subject,
         html: data.emailTemplate,

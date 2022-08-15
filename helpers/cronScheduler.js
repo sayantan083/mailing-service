@@ -13,6 +13,7 @@ const task = cron.schedule('30 18 * * *', () => {
                 return user.email
             })
             console.log(allEmails)
+            if(!allEmails.length) return;
             const options = {
                 url: 'https://dad-jokes.p.rapidapi.com/random/joke',
                 method: 'GET',
@@ -24,19 +25,21 @@ const task = cron.schedule('30 18 * * *', () => {
             axios(options)
             .then(response=>{
                 let indianDate = new Date().toLocaleString("en-Us", {timeZone: 'Asia/Kolkata'});
-                console.log(response.data)
                 if(response.data.success){
+                allEmails.forEach(email=>{
                     const payload = {
-                        emails: allEmails,
-                        subject: "Want to make you smile",
+                        emails: email,
+                        subject: "Brought you some humour",
                         emailTemplate: `<div>
                         <h4>Hey there! Here is your daily digest of dad jokes😉</h4>
                         <p>${response.data.body[0].setup}</p>
                         <p>${response.data.body[0].punchline}</p>
+                        <p><a href="https://joke-subscription.herokuapp.com/unsubscribe/${email}">Click here</a> to unsubscribe.</p>
                       </div>`
                     }
                     sendMail(payload)
                     console.log('Sent mail at ' + indianDate);
+                })
                 }else {
                     console.log('Joke api failure ' + indianDate);
                 }
