@@ -17,6 +17,7 @@ router.post('/send', (req, res) => {
     })
 
     const registerUser = (db)=>{
+
         const newUser = new User(body)
         newUser.save().then(response=>{
             console.log(response)
@@ -38,17 +39,45 @@ router.post('/send', (req, res) => {
         }).catch(err=>{
             console.log(err.message)
             if(err.message.includes("duplicate key")){
-                res.json({
-                    success: false,
-                    message: 'Email already registered!'
+                User.find({email:body.email,isSubscribed:false})
+                .then(response=>{
+                    console.log(response.length)
+                    if(response.length){
+                        User.updateOne({email: body.email},{isSubscribed:true})
+                        .then(response=>{
+                            res.json({
+                                success: true,
+                                message: 'Subscribed'
+                            })
+                            db.disconnect()
+                        })
+                        .catch(error=>{
+                            console.log(error)
+                            db.disconnect()
+                        })
+                    }else{
+                        res.json({
+                            success: false,
+                            message: 'Email already registered!'
+                        })
+                        db.disconnect()
+                    }
+                })
+                .catch(error=>{
+                    console.log(error)
+                    res.json({
+                        success: false,
+                        message: 'Something went wrong!'
+                    })
+                    db.disconnect()
                 })
             }else{
                 res.json({
                     success: false,
                     message: 'Something went wrong!'
                 })
+                db.disconnect()
             }
-            db.disconnect()
         })
     }
 
