@@ -6,7 +6,7 @@ const axios = require('axios');
 
 const task = cron.schedule('30 18 * * *', () => {
 
-    const sendJoke = (db)=>{
+    const sendJoke = ()=>{
         User.find({isSubscribed:true}).then(response=>{
 
             const allEmails = response.map(user=>{
@@ -43,7 +43,6 @@ const task = cron.schedule('30 18 * * *', () => {
                 }else {
                     console.log('Joke api failure ' + indianDate);
                 }
-                db.disconnect()
             })
             .catch(err => console.error(err));
         }).catch(err=>{
@@ -52,7 +51,6 @@ const task = cron.schedule('30 18 * * *', () => {
                 success: false,
                 message: 'Something went wrong!'
             })
-            db.disconnect()
         })
     }
 

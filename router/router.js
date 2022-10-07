@@ -16,7 +16,7 @@ router.post('/send', (req, res) => {
         message: 'Please fill all the details!'
     })
 
-    const registerUser = (db)=>{
+    const registerUser = ()=>{
 
         const newUser = new User(body)
         newUser.save().then(response=>{
@@ -35,7 +35,6 @@ router.post('/send', (req, res) => {
                 success: true,
                 message: 'Subscribed'
             })
-            db.disconnect()
         }).catch(err=>{
             console.log(err.message)
             if(err.message.includes("duplicate key")){
@@ -49,18 +48,15 @@ router.post('/send', (req, res) => {
                                 success: true,
                                 message: 'Subscribed'
                             })
-                            db.disconnect()
                         })
                         .catch(error=>{
                             console.log(error)
-                            db.disconnect()
                         })
                     }else{
                         res.json({
                             success: false,
                             message: 'Email already registered!'
                         })
-                        db.disconnect()
                     }
                 })
                 .catch(error=>{
@@ -69,14 +65,12 @@ router.post('/send', (req, res) => {
                         success: false,
                         message: 'Something went wrong!'
                     })
-                    db.disconnect()
                 })
             }else{
                 res.json({
                     success: false,
                     message: 'Something went wrong!'
                 })
-                db.disconnect()
             }
         })
     }
@@ -92,15 +86,13 @@ router.get('/unsubscribe/:email', (req, res)=>{
 
     const email = req.params.email;
 
-    const unsubscribeUser = (db)=>{
+    const unsubscribeUser = ()=>{
 
         User.findOneAndUpdate({email:email},{isSubscribed:false}).then(response=>{
             console.log(response)
             res.sendFile(path.join(__dirname, '..', 'pages', 'unsubscribed.html'))
-            db.disconnect()
         }).catch(err=>{
             res.sendFile(path.join(__dirname, '..', 'pages', 'error.html'))
-            db.disconnect()
         })
     }
 

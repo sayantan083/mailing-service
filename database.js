@@ -1,15 +1,13 @@
 const mongoose = require('mongoose');
-let db;
+const util = require('util');
 
 const connectToDb = (callback) =>{
-    mongoose.connect('mongodb+srv://node-app:'+process.env.DB_PASSWORD+'@cluster0.x0hr6oa.mongodb.net/subscription', {useNewUrlParser: true}).then((dbConnection)=>{
-        db = dbConnection;
-        afterwards(callback);
+    mongoose.connect('mongodb+srv://node-app:'+process.env.DB_PASSWORD+'@cluster0.x0hr6oa.mongodb.net/subscription', {useNewUrlParser: true})
+    .then(async(dbConnection)=>{
+        callback = util.promisify(callback);
+        await callback()
+        dbConnection.disconnect()
     });
-}
-
-const afterwards = (callback) =>{
-    callback(db)
 }
 
 const conn = mongoose.connection;
